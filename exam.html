@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Exam X - অ্যাডভান্সড সুরক্ষিত অনলাইন পরীক্ষা</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Noto+Sans+Bangla:wght=400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===========================
+           Premium / Iconic UI Theme
+           =========================== */
+
+        :root{
+            --bg: #0f1724; /* deep midnight */
+            --card: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+            --glass: rgba(255,255,255,0.03);
+            --accent: #1766ff; /* primary */
+            --accent-2: #00d4b8; /* teal */
+            --muted: #9aa4b2;
+            --danger: #ff5c5c;
+            --warning: #ffb020;
+            --success: #2ad48f;
+            --soft-white: rgba(255,255,255,0.95);
+            --radius: 14px;
+            --shadow-1: 0 6px 30px rgba(2,6,23,0.7);
+            --glass-border: rgba(255,255,255,0.06);
+            --font-sans: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-bn: 'Noto Sans Bangla', var(--font-sans);
+        }
+
+        *{box-sizing:border-box}
+        html,body{
+            height:100%;
+            margin:0;
+            background:
+                radial-gradient(800px 400px at 10% 10%, rgba(23,102,255,0.08), transparent),
+                radial-gradient(600px 300px at 90% 90%, rgba(0,212,184,0.03), transparent),
+                var(--bg);
+            font-family: var(--font-bn);
+            color: var(--soft-white);
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+        }
+
+        /* Centering layout */
+        .app-wrap{
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:28px;
+        }
+
+        /* Main container */
+        .container{
+            width:100%;
+            max-width:1160px;
+            border-radius:20px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border: 1px solid rgba(255,255,255,0.04);
+            box-shadow: var(--shadow-1);
+            overflow:hidden;
+            display:none; /* kept same as original flow */
+        }
+
+        /* Header - brand + timers */
+        .header{
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:20px;
+            padding:20px 28px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .brand{
+            display:flex;
+            align-items:center;
+            gap:14px;
+        }
+
+        .brand-logo{
+            width:56px;
+            height:56px;
+            border-radius:12px;
+            background: linear-gradient(135deg, rgba(23,102,255,0.95), rgba(0,212,184,0.95));
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            box-shadow: 0 6px 18px rgba(23,102,255,0.17), inset 0 -6px 18px rgba(0,0,0,0.12);
+        }
+
+        .brand-logo svg{filter: drop-shadow(0 6px 18px rgba(0,0,0,0.2));}
+        .brand-title{
+            display:flex;
+            flex-direction:column;
+            line-height:1;
+        }
+        .brand-title .title-main{
+            font-weight:800;
+            font-size:1.05rem;
+            color: #fff;
+            letter-spacing:0.2px;
+        }
+        .brand-title .title-sub{
+            font-size:0.78rem;
+            color:var(--muted);
+            margin-top:2px;
+        }
+
+        .header-right{
+            display:flex;
+            gap:12px;
+            align-items:center;
+        }
+
+        .pill{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            padding:8px 14px;
+            border-radius:12px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border: 1px solid var(--glass-border);
+            min-width:150px;
+            justify-content:center;
+        }
+        .pill .label{font-size:12px;color:var(--muted)}
+        .pill .value{font-weight:700;color:var(--soft-white)}
+
+        .overall-timer{
+            background: linear-gradient(90deg, rgba(23,102,255,0.14), rgba(0,212,184,0.06));
+            border: 1px solid rgba(23,102,255,0.12);
+            padding:10px 16px;
+            border-radius:12px;
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        /* Exam area */
+        .exam-area{
+            display:flex;
+            gap:28px;
+            padding:28px;
+            align-items:flex-start;
+        }
+
+        /* Left column: questions */
+        .left-col{
+            flex:1.6;
+            min-width:420px;
+        }
+
+        /* Question card */
+        .question-card{
+            background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+            border-radius:14px;
+            padding:20px;
+            border:1px solid rgba(255,255,255,0.03);
+            box-shadow: 0 10px 30px rgba(2,6,23,0.5);
+        }
+
+        #question-text{
+            font-size:1.18rem;
+            color: #eef6ff;
+            padding:16px;
+            border-radius:10px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border-left: 4px solid rgba(255,190,67,0.12);
+            margin-bottom:18px;
+            user-select:none;
+        }
+
+        .options-list{
+            list-style:none;
+            padding:0;
+            margin:0;
+            display:grid;
+            grid-template-columns:1fr 1fr;
+            gap:12px;
+        }
+
+        .option-item{
+            height:100%;
+        }
+
+        .option-label{
+            display:flex;
+            gap:14px;
+            align-items:center;
+            padding:14px 16px;
+            border-radius:12px;
+            cursor:pointer;
+            transition:all 0.18s ease;
+            background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.01));
+            border: 1px solid rgba(255,255,255,0.03);
+            color:var(--soft-white);
+            font-weight:600;
+            font-size:0.98rem;
+            height:100%;
+        }
+
+        .option-label:hover{
+            transform:translateY(-4px);
+            box-shadow: 0 10px 30px rgba(2,6,23,0.55);
+            border-color: rgba(23,102,255,0.3);
+        }
+
+        .option-radio{
+            width:44px;
+            height:44px;
+            min-width:44px;
+            border-radius:10px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+            border:1px solid rgba(255,255,255,0.03);
+        }
+
+        input.option-input[type="radio"]{ display:none; }
+
+        input.option-input[type="radio"]:checked + .option-label{
+            background: linear-gradient(135deg, rgba(23,102,255,0.12), rgba(0,212,184,0.06));
+            border: 1px solid rgba(23,102,255,0.22);
+            box-shadow: 0 12px 30px rgba(23,102,255,0.10);
+            transform: translateY(-2px);
+            color: #fff;
+        }
+
+        /* Right column: controls & grid */
+        .right-col{
+            flex:0.9;
+            max-width:360px;
+        }
+
+        .meta-card{
+            padding:18px;
+            border-radius:12px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+            border:1px solid rgba(255,255,255,0.03);
+            margin-bottom:14px;
+        }
+
+        .q-counter{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:12px;
+        }
+        .q-counter .left{font-weight:700;color:#e6f0ff}
+        .q-counter .right{color:var(--muted);font-size:13px}
+
+        .progress-bar-container{ margin-top:14px; background: rgba(255,255,255,0.03); height:10px; border-radius:10px; overflow:hidden; border:1px solid rgba(255,255,255,0.02) }
+        .progress-bar{ height:100%; width:0%; background: linear-gradient(90deg, var(--success), #00cc66); background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width 0.6s cubic-bezier(.2,.9,.3,1); }
+
+        .controls{
+            display:flex;
+            gap:12px;
+            margin-top:18px;
+            align-items:center;
+        }
+        .btn{
+            padding:12px 16px;
+            border-radius:10px;
+            border: none;
+            cursor:pointer;
+            font-weight:700;
+            letter-spacing:0.2px;
+            transition:transform .12s ease, box-shadow .12s ease;
+        }
+        .btn:active{ transform:scale(.99) }
+
+        .btn-primary{
+            background: linear-gradient(90deg, var(--accent), #2a6bff);
+            color:white;
+            box-shadow: 0 10px 30px rgba(38,98,255,0.12);
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+        .btn-ghost{
+            background:transparent;
+            color:var(--soft-white);
+            border:1px solid rgba(255,255,255,0.04);
+        }
+        .btn-danger{
+            background: linear-gradient(90deg, #ff5c5c, #ff7b7b);
+            color:white;
+            border: none;
+        }
+
+        .question-grid{
+            display:flex;
+            flex-wrap:wrap;
+            gap:10px;
+            margin-top:12px;
+        }
+
+        .question-btn{
+            width:46px;height:46px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+            background:transparent;border:1px solid rgba(255,255,255,0.04); color:var(--soft-white); font-weight:700; cursor:pointer;
+            transition:all .12s ease;
+        }
+        .question-btn:hover{ transform:translateY(-4px); border-color: rgba(23,102,255,0.18) }
+        .question-btn.active{ background: linear-gradient(90deg, var(--accent), #2a6bff); color:white; box-shadow: 0 10px 26px rgba(38,98,255,0.12) }
+        .question-btn.answered{ background: linear-gradient(90deg, #00c58a, #00b37a); color:white; border-color:transparent }
+        .question-btn.marked{ background: linear-gradient(90deg, #ffb020, #ff9a20); color:white; border-color:transparent }
+
+        /* Loading & proctor */
+        .loading-screen{
+            position:fixed; left:0; top:0; right:0; bottom:0;
+            display:flex; align-items:center; justify-content:center;
+            background: rgba(4,8,20,0.7); z-index:2200; flex-direction:column;
+        }
+        .spinner{
+            width:72px;height:72px;border-radius:12px;
+            background: conic-gradient(var(--accent), rgba(255,255,255,0.03));
+            animation: spin 1.2s linear infinite;
+            margin-bottom:14px;
+            box-shadow: 0 12px 40px rgba(23,102,255,0.12);
+        }
+        @keyframes spin{ 0%{ transform: rotate(0deg) } 100%{ transform: rotate(360deg) } }
+
+        .proctor-alert{
+            position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:2300;
+            background: linear-gradient(180deg, rgba(0,0,0,0.6), rgba(0,0,0,0.85));
+        }
+        .alert-content{
+            width:95%;
+            max-width:640px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border-radius:14px;
+            padding:24px;
+            border:1px solid rgba(255,255,255,0.04);
+            text-align:center;
+        }
+        .alert-content h3{ color: #fff; margin:0 0 10px; font-size:1.15rem }
+        .alert-content p{ color:var(--muted); margin:6px 0; line-height:1.5 }
+
+        /* Result Screen */
+        .result-screen{
+            padding:28px;
+            display:none;
+            border-radius:12px;
+        }
+        .result-screen h2{ color: #fff; margin-top:0 }
+        .result-detail-table{ width:100%; border-collapse:collapse; margin-top:12px; color:var(--muted) }
+        .result-detail-table th, .result-detail-table td{ padding:10px; border-bottom:1px dashed rgba(255,255,255,0.03); font-size:0.95rem; text-align:left }
+
+        /* Start screen */
+        .start-screen{
+            padding:36px; border-radius:16px; max-width:820px; margin:20px auto; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border:1px solid rgba(255,255,255,0.03); text-align:center;
+        }
+        .start-screen h2{ margin:0 0 8px; color:#fff }
+
+        /* Responsive */
+        @media (max-width: 900px){
+            .exam-area{ flex-direction:column }
+            .left-col{ min-width:unset }
+            .right-col{ max-width:100% }
+            .options-list{ grid-template-columns: 1fr }
+            .brand-logo{ width:48px;height:48px }
+        }
+
+        /* small helpers */
+        .muted{ color:var(--muted) }
+        .small{ font-size:0.86rem }
+        .space{ height:12px }
+    </style>
+</head>
+<body>
+    <div class="loading-screen" id="loading-screen">
+        <div class="spinner"></div>
+        <p style="color:var(--soft-white); font-weight:700">পরীক্ষা প্রস্তুত করা হচ্ছে ...</p>
+    </div>
+
+    <div class="proctor-alert" id="proctor-alert">
+        <div class="alert-content">
+            <h3>🚫 সতর্কতা — পরীক্ষার নিরাপত্তা ভঙ্গ</h3>
+            <p>আপনি পরীক্ষার বাইরে গেছেন বা ফুল-স্ক্রিন থেকে বেরিয়েছেন।</p>
+            <p style="color:var(--danger); font-weight:700">স্বয়ংক্রিয়ভাবে পরীক্ষা জমা করা হচ্ছে — অনুগ্রহ করে পরীক্ষা থেকে বের না হোন।</p>
+        </div>
+    </div>
+
+    <div class="start-screen" id="start-screen">
+        <h2>Exam X — প্রিমিয়াম সুরক্ষিত অনলাইন পরীক্ষা</h2>
+        <p class="muted" style="margin-top:8px">নিচের তথ্যগুলো যাচাই করে পরীক্ষা শুরু করুন (ফুল-স্ক্রিন অনুরোধ করা হবে)।</p>
+
+        <div style="display:flex; gap:18px; justify-content:center; margin-top:18px; flex-wrap:wrap;">
+            <div style="background:rgba(255,255,255,0.02); padding:14px 18px; border-radius:10px; border:1px solid rgba(255,255,255,0.03)">
+                <div style="font-weight:800; font-size:1.05rem" id="total-q-count">--</div>
+                <div class="muted small">মোট প্রশ্ন</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.02); padding:14px 18px; border-radius:10px; border:1px solid rgba(255,255,255,0.03)">
+                <div style="font-weight:800; font-size:1.05rem" id="total-time-limit">--</div>
+                <div class="muted small">মোট সময় (মিনিট)</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.02); padding:14px 18px; border-radius:10px; border:1px solid rgba(255,255,255,0.03)">
+                <div style="font-weight:800; font-size:1.05rem" id="q-time-limit">--</div>
+                <div class="muted small">প্রতি প্রশ্ন (সে.)</div>
+            </div>
+        </div>
+
+        <p style="color:var(--danger); font-weight:700; margin-top:18px">সতর্কতা: ট্যাব পরিবর্তন, সম্পূর্ণ স্ক্রিন ছাড়া বের হওয়া বা কপি-পেস্ট চেষ্টা করলে পরীক্ষা অটোমেটিক সাবমিট ও নম্বর কাটা হবে।</p>
+
+        <div style="margin-top:18px">
+            <button class="btn btn-primary" id="start-exam-btn" style="padding:12px 22px; font-size:1rem">
+                ▶ পরীক্ষা শুরু করুন (ফুল-স্ক্রিন)
+            </button>
+        </div>
+    </div>
+
+    <div class="app-wrap">
+        <div class="container" id="exam-container">
+            <div class="header">
+                <div class="brand">
+                    <div class="brand-logo" aria-hidden="true">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L4 5v6c0 5 3.8 9.9 8 11 4.2-1.1 8-6 8-11V5l-8-3z" fill="white" opacity="0.95"/>
+                            <path d="M9.5 12.5l1.8 1.8L15 10.6" stroke="#0033FF" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <div class="brand-title">
+                        <div class="title-main">Exam X</div>
+                        <div class="title-sub">প্রিমিয়াম সিকিউরড টেস্ট সিস্টেম</div>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <div class="pill overall-timer" title="সমগ্র পরীক্ষার সময়">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="opacity:0.95"><path d="M12 7v6l4 2" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <div>
+                            <div class="label small">সময় বাকি</div>
+                            <div id="overall-timer-display" class="value">--:--</div>
+                        </div>
+                    </div>
+
+                    <div class="pill" title="প্রশ্ন অগ্রগতি">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:0.95"><path d="M12 2v20M2 12h20" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+                        <div>
+                            <div class="label small">অগ্রগতি</div>
+                            <div id="progress-perc" class="value">0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="exam-area">
+                <div class="left-col">
+                    <div class="question-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+                            <div class="q-counter">
+                                <div class="left" id="q-counter">প্রশ্ন: ১ / ৫০</div>
+                                <div class="right small muted">প্রশ্ন টাইমার</div>
+                            </div>
+
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <div id="q-timer-display" class="pill" style="min-width:120px; justify-content:center;">
+                                    <div class="label small">প্রশ্ন টাইম</div>
+                                    <div class="value" style="font-weight:800">-- সে.</div>
+                                </div>
+
+                                <button class="btn btn-ghost" id="mark-question-btn" title="Mark question">🏷️ মার্ক করুন</button>
+                            </div>
+                        </div>
+
+                        <div style="height:12px"></div>
+
+                        <p id="question-text" onselectstart="return false;">প্রশ্ন পড়ুন...</p>
+
+                        <ul class="options-list" id="options-list">
+                            </ul>
+
+                        <div style="display:flex; justify-content:space-between; gap:12px; margin-top:22px;">
+                            <button class="btn btn-ghost" id="prev-q-btn" onclick="prevQuestion()">← পূর্ববর্তী</button>
+
+                            <div style="display:flex; gap:12px;">
+                                <button class="btn btn-primary" id="next-q-btn">পরবর্তী প্রশ্ন</button>
+                                <button class="btn btn-danger" id="submit-exam-btn">পরীক্ষা জমা দিন</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:14px; display:flex; gap:12px;">
+                        <div style="flex:1; padding:12px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00)); border:1px solid rgba(255,255,255,0.03)">
+                            <div style="font-size:0.9rem; color:var(--muted)">নোট</div>
+                            <div style="font-weight:700; margin-top:6px">প্রতিটি প্রশ্নে সময় সীমা আছে — পাস/ফেইল রুল প্রযোজ্য।</div>
+                        </div>
+                        <div style="width:160px; padding:12px; border-radius:12px; background:linear-gradient(90deg, rgba(23,102,255,0.06), rgba(0,212,184,0.02)); border:1px solid rgba(23,102,255,0.08)">
+                            <div style="font-size:0.86rem; color:var(--muted)">নেগেটিভ মার্কিং</div>
+                            <div style="font-weight:800; margin-top:6px">0.25 পয়েন্ট</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-col">
+                    <div class="meta-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <div class="muted small">প্রশ্ন</div>
+                                <div id="q-summary" style="font-weight:800; font-size:1.05rem; color:#eaf4ff">১ / ৫০</div>
+                            </div>
+                            <div>
+                                <div class="muted small">মোট সময়</div>
+                                <div style="font-weight:800; font-size:1.05rem">60 মিনিট</div>
+                            </div>
+                        </div>
+
+                        <div class="space"></div>
+                        <div class="progress-bar-container"><div class="progress-bar" id="exam-progress-bar"></div></div>
+
+                        <div class="space"></div>
+                        <div class="muted small">দ্রুত নেভিগেশন</div>
+                        <div class="question-grid" id="question-grid">
+                            </div>
+                    </div>
+
+                    <div class="meta-card" style="margin-top:12px; display:flex; flex-direction:column; gap:10px;">
+                        <div style="display:flex; align-items:center; justify-content:space-between;">
+                            <div class="muted small">চূড়ান্ত সাবমিট</div>
+                            <div style="font-weight:800">সতর্ক থাকুন</div>
+                        </div>
+                        <div class="muted small">ট্যাব/উইন্ডো পরিবর্তন করলে পরীক্ষা স্বয়ংক্রিয়ভাবে জমা হবে।</div>
+                        <div style="display:flex; gap:8px; margin-top:6px;">
+                            <button class="btn btn-ghost" onclick="navigateToQuestion(0)">প্রথম প্রশ্ন</button>
+                            <button class="btn btn-ghost" onclick="navigateToQuestion(examQuestions.length - 1)">শেষ প্রশ্ন</button>
+                        </div>
+                    </div>
+                </div>
+            </div> </div> </div> <div class="container result-screen" id="result-screen">
+        <h2>পরীক্ষার ফলাফল</h2>
+        <h3 id="final-score"></h3>
+        <p id="deduction-msg" style="color:var(--danger); font-weight:700"></p>
+
+        <h3 style="margin-top:18px; color:#fff">বিস্তারিত সময় বিশ্লেষণ</h3>
+        <div style="overflow:auto; max-height:360px; margin-top:12px;">
+            <table class="result-detail-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>প্রশ্ন</th>
+                        <th>উত্তরের সময়</th>
+                        <th>স্ট্যাটাস</th>
+                    </tr>
+                </thead>
+                <tbody id="result-table-body"></tbody>
+            </table>
+        </div>
+
+        <div style="margin-top:18px;">
+            <button class="btn btn-primary" onclick="location.reload()">নতুন পরীক্ষা শুরু করুন</button>
+        </div>
+    </div>
+
+    <script>
+        // === ডাটা এবং সেটিংস ===
+        const EXAM_SETTINGS = {
+            TOTAL_QUESTIONS: 50,
+            OVERALL_TIME_LIMIT_MIN: 60, 
+            QUESTION_TIME_LIMIT_SEC: 90, 
+            TAB_SWITCH_PENALTY_PERCENT: 15,
+            NEGATIVE_MARKING: 0.25
+        };
+
+        // **********************************************
+        // === প্রশ্ন ব্যাংক JSON কাঠামো - অপরিবর্তিত রাখা হয়েছে ===
+        // **********************************************
+        const QUESTION_JSON_DATA = `
+        [
+            {
+                "id": 1,
+                "text": "বাংলাদেশের জাতীয় ফল কোনটি? (ডাটা: বছর)",
+                "options": ["আম", "কাঁঠাল", "পেঁপে", "কলা"],
+                "answer": "কাঁঠাল",
+                "baseMarks": 1,
+                "randomizeData": {"key": "বছর", "min": 1971, "max": 2025, "unit": "সাল"}
+            },
+            {
+                "id": 2,
+                "text": "ঢাকা বাংলাদেশের রাজধানী হয় কবে? (ডাটা: সংখ্যা)",
+                "options": ["১৬০৮", "১৬১০", "১৬১২", "১৬১৪"],
+                "answer": "১৬১০",
+                "baseMarks": 1,
+                "randomizeData": {"key": "সংখ্যা", "min": 1000, "max": 2000, "unit": "খ্রিষ্টাব্দে"}
+            },
+            {
+                "id": 3,
+                "text": "মুক্তিযুদ্ধের সময় বাংলাদেশকে কয়টি সেক্টরে ভাগ করা হয়?",
+                "options": ["১১টি", "৭টি", "১০টি", "৮টি"],
+                "answer": "১১টি",
+                "baseMarks": 1
+            },
+            {
+                "id": 4,
+                "text": "লালবাগ কেল্লা কোথায় অবস্থিত?",
+                "options": ["চট্টগ্রাম", "ঢাকা", "রাজশাহী", "খুলনা"],
+                "answer": "ঢাকা",
+                "baseMarks": 1
+            },
+            {
+                "id": 5,
+                "text": "কম্পিউটারের জনক কে?",
+                "options": ["চার্লস ব্যাবেজ", "বিল গেটস", "স্টিভ জবস", "অ্যালান টুরিং"],
+                "answer": "চার্লস ব্যাবেজ",
+                "baseMarks": 1
+            },
+            {
+                "id": 6,
+                "text": "পদ্মা সেতুর দৈর্ঘ্য কত কিলোমিটার? (ডাটা: দৈর্ঘ্য)",
+                "options": ["৬.১৫", "৫.৯৯", "৬.২১", "৭.০১"],
+                "answer": "৬.১৫",
+                "baseMarks": 1,
+                "randomizeData": {"key": "দৈর্ঘ্য", "min": 5, "max": 7, "unit": "কিমি"}
+            },
+            {
+                "id": 7,
+                "text": "কোনটি নবায়নযোগ্য শক্তির উৎস?",
+                "options": ["কয়লা", "গ্যাস", "সূর্যের আলো", "পেট্রোলিয়াম"],
+                "answer": "সূর্যের আলো",
+                "baseMarks": 1
+            },
+            {
+                "id": 8,
+                "text": "পৃথিবী সূর্যের চারদিকে ঘোরে - কে আবিষ্কার করেন?",
+                "options": ["গ্যালিলিও", "নিউটন", "কোপারনিকাস", "আইনস্টাইন"],
+                "answer": "কোপারনিকাস",
+                "baseMarks": 1
+            },
+            {
+                "id": 9,
+                "text": "বাংলাদেশের জাতীয় পশু কোনটি?",
+                "options": ["হাতি", "বাঘ", "ময়ূর", "রয়েল বেঙ্গল টাইগার"],
+                "answer": "রয়েল বেঙ্গল টাইগার",
+                "baseMarks": 1
+            },
+            {
+                "id": 10,
+                "text": "বাংলাদেশের জাতীয় ফুল কোনটি?",
+                "options": ["গোলাপ", "শাপলা", "জবা", "কমল"],
+                "answer": "শাপলা",
+                "baseMarks": 1
+            },
+            {
+                "id": 11,
+                "text": "বাংলাদেশের জাতীয় কবি কে?",
+                "options": ["কাজী নজরুল ইসলাম", "রবীন্দ্রনাথ ঠাকুর", "জসীম উদ্দীন", "মাইকেল মধুসূদন দত্ত"],
+                "answer": "কাজী নজরুল ইসলাম",
+                "baseMarks": 1
+            },
+            {
+                "id": 12,
+                "text": "বাংলাদেশের স্বাধীনতা দিবস কবে?",
+                "options": ["২৬ মার্চ", "১৬ ডিসেম্বর", "২১ ফেব্রুয়ারি", "৭ মার্চ"],
+                "answer": "২৬ মার্চ",
+                "baseMarks": 1
+            },
+            {
+                "id": 13,
+                "text": "বাংলাদেশের বিজয় দিবস কবে?",
+                "options": ["২৬ মার্চ", "১৬ ডিসেম্বর", "২১ ফেব্রুয়ারি", "৭ মার্চ"],
+                "answer": "১৬ ডিসেম্বর",
+                "baseMarks": 1
+            },
+            {
+                "id": 14,
+                "text": "বাংলাদেশের জাতীয় সঙ্গীতের রচয়িতা কে?",
+                "options": ["রবীন্দ্রনাথ ঠাকুর", "কাজী নজরুল ইসলাম", "দ্বিজেন্দ্রলাল রায়", "আব্দুল করিম"],
+                "answer": "রবীন্দ্রনাথ ঠাকুর",
+                "baseMarks": 1
+            },
+            {
+                "id": 15,
+                "text": "বাংলাদেশের প্রথম রাষ্ট্রপতি কে ছিলেন?",
+                "options": ["শেখ মুজিবুর রহমান", "জিয়াউর রহমান", "আব্দুস সাত্তার", "হুসেইন মুহাম্মদ এরশাদ"],
+                "answer": "শেখ মুজিবুর রহমান",
+                "baseMarks": 1
+            },
+            {
+                "id": 16,
+                "text": "বাংলাদেশের জাতীয় সংসদের আসন সংখ্যা কত?",
+                "options": ["৩০০", "৩৫০", "৪০০", "৪৫০"],
+                "answer": "৩০০",
+                "baseMarks": 1
+            },
+            {
+                "id": 17,
+                "text": "বাংলাদেশের জাতীয় ক্রিকেট দলের বর্তমান অধিনায়ক কে?",
+                "options": ["মাশরাফি বিন মর্তুজা", "তামিম ইকবাল", "শাকিব আল হাসান", "মাহমুদউল্লাহ রিয়াদ"],
+                "answer": "শাকিব আল হাসান",
+                "baseMarks": 1
+            },
+            {
+                "id": 18,
+                "text": "বাংলাদেশের জাতীয় পতাকা প্রথম উত্তোলন করা হয় কবে?",
+                "options": ["২ মার্চ, ১৯৭১", "২৬ মার্চ, ১৯৭১", "১৭ এপ্রিল, ১৯৭১", "১৬ ডিসেম্বর, ১৯৭১"],
+                "answer": "২ মার্চ, ১৯৭১",
+                "baseMarks": 1
+            },
+            {
+                "id": 19,
+                "text": "বাংলাদেশের জাতীয় উদ্যান কোনটি?",
+                "options": ["সুন্দরবন", "ভাওয়াল জাতীয় উদ্যান", "লাউয়াছড়া জাতীয় উদ্যান", "মধাপুরী জাতীয় উদ্যান"],
+                "answer": "ভাওয়াল জাতীয় উদ্যান",
+                "baseMarks": 1
+            },
+            {
+                "id": 20,
+                "text": "বাংলাদেশের জাতীয় স্টেডিয়ামের নাম কী?",
+                "options": ["বঙ্গবন্ধু জাতীয় স্টেডিয়াম", "মিরপুর স্টেডিয়াম", "ঢাকা স্টেডিয়াম", "চট্টগ্রাম স্টেডিয়াম"],
+                "answer": "বঙ্গবন্ধু জাতীয় স্টেডিয়াম",
+                "baseMarks": 1
+            },
+            {
+                "id": 21,
+                "text": "বাংলাদেশের জাতীয় জাদুঘর কোথায় অবস্থিত?",
+                "options": ["ঢাকা", "চট্টগ্রাম", "রাজশাহী", "খুলনা"],
+                "answer": "ঢাকা",
+                "baseMarks": 1
+            },
+            {
+                "id": 22,
+                "text": "বাংলাদেশের জাতীয় গ্রন্থাগার কোথায় অবস্থিত?",
+                "options": ["ঢাকা", "চট্টগ্রাম", "রাজশাহী", "খুলনা"],
+                "answer": "ঢাকা",
+                "baseMarks": 1
+            },
+            {
+                "id": 23,
+                "text": "বাংলাদেশের জাতীয় বিমানবন্দর কোনটি?",
+                "options": ["শাহজালাল আন্তর্জাতিক বিমানবন্দর", "শাহ আমানত আন্তর্জাতিক বিমানবন্দর", "ওসমানী আন্তর্জাতিক বিমানবন্দর", "কক্সবাজার বিমানবন্দর"],
+                "answer": "শাহজালাল আন্তর্জাতিক বিমানবন্দর",
+                "baseMarks": 1
+            },
+            {
+                "id": 24,
+                "text": "বাংলাদেশের জাতীয় নদী কোনটি?",
+                "options": ["পদ্মা", "মেঘনা", "যমুনা", "ব্রহ্মপুত্র"],
+                "answer": "পদ্মা",
+                "baseMarks": 1
+            },
+            {
+                "id": 25,
+                "text": "বাংলাদেশের জাতীয় মাছ কোনটি?",
+                "options": ["রুই", "কাতলা", "ইলিশ", "পাঙ্গাস"],
+                "answer": "ইলিশ",
+                "baseMarks": 1
+            },
+            {
+                "id": 26,
+                "text": "বাংলাদেশের জাতীয় পাখি কোনটি?",
+                "options": ["দোয়েল", "চড়ুই", "কাক", "ময়ূর"],
+                "answer": "দোয়েল",
+                "baseMarks": 1
+            },
+            {
+                "id": 27,
+                "text": "বাংলাদেশের জাতীয় খেলা কোনটি?",
+                "options": ["ক্রিকেট", "ফুটবল", "কাবাডি", "হকি"],
+                "answer": "কাবাডি",
+                "baseMarks": 1
+            },
+            {
+                "id": 28,
+                "text": "বাংলাদেশের জাতীয় বন কোনটি?",
+                "options": ["সুন্দরবন", "ভাওয়াল বন", "মধুপুর বন", "চন্দ্রিমা বন"],
+                "answer": "সুন্দরবন",
+                "baseMarks": 1
+            },
+            {
+                "id": 29,
+                "text": "বাংলাদেশের জাতীয় প্রতীক কোনটি?",
+                "options": ["শাপলা ফুল", "পদ্ম ফুল", "জবা ফুল", "গোলাপ ফুল"],
+                "answer": "শাপলা ফুল",
+                "baseMarks": 1
+            },
+            {
+                "id": 30,
+                "text": "বাংলাদেশের জাতীয় স্মৃতিসৌধ কোথায় অবস্থিত?",
+                "options": ["সাভার", "ঢাকা", "চট্টগ্রাম", "কুমিল্লা"],
+                "answer": "সাভার",
+                "baseMarks": 1
+            },
+            {
+                "id": 31,
+                "text": "বাংলাদেশের জাতীয় পার্ক কোনটি?",
+                "options": ["সুন্দরবন", "রামসাগর", "মধুপুর", "ভাওয়াল"],
+                "answer": "সুন্দরবন",
+                "baseMarks": 1
+            },
+            {
+                "id": 32,
+                "text": "বাংলাদেশের জাতীয় কবিতার নাম কী?",
+                "options": ["বিদ্রোহী", "কাঁদতে আসিনি", "সমাধি", "আমার সোনার বাংলা"],
+                "answer": "বিদ্রোহী",
+                "baseMarks": 1
+            },
+            {
+                "id": 33,
+                "text": "বাংলাদেশের জাতীয় গানের নাম কী?",
+                "options": ["আমার সোনার বাংলা", "জনগণমন", "বাংলার মাটি", "ধনধান্য পুষ্প ভরা"],
+                "answer": "আমার সোনার বাংলা",
+                "baseMarks": 1
+            },
+            {
+                "id": 34,
+                "text": "বাংলাদেশের জাতীয় নাট্যশালা কোথায় অবস্থিত?",
+                "options": ["ঢাকা", "চট্টগ্রাম", "রাজশাহী", "খুলনা"],
+                "answer": "ঢাকা",
+                "baseMarks": 1
+            },
+            {
+                "id": 35,
+                "text": "বাংলাদেশের জাতীয় চিড়িয়াখানা কোথায় অবস্থিত?",
+                "options": ["ঢাকা", "চট্টগ্রাম", "রাজশাহী", "খুলনা"],
+                "answer": "ঢাকা",
+                "baseMarks": 1
+            },
+            {
+                "id": 36,
+                "text": "বাংলাদেশের জাতীয় বোটানিক্যাল গার্ডেন কোথায় অবস্থিত?",
+                "options": ["ঢাকা", "চট্টগ্রাম", "রাজশাহী", "খুলনা"],
+                "answer": "ঢাকা",
+                "baseMarks": 1
+            },
+            {
+                "id": 37,
+                "text": "বাংলাদেশের জাতীয় শিশু পার্ক কোথায় অবস্থিত?",
+                "options": ["ঢাকা", "চট্টগ্রাম", "রাজশাহী", "খুলনা"],
+                "answer": "ঢাকা",
+                "baseMarks": 1
+            },
+            {
+                "id": 38,
+                "text": "বাংলাদেশের জাতীয় বিজ্ঞান ও প্রযুক্তি জাদুঘর কোথায় অবস্থিত?",
+                "options": ["ঢাকা", "চট্টগ্রাম", "রাজশahidi", "খুলনা"],
+                "answer": "ঢাকা",
+                "baseMarks": 1
+            },
+            {
+                "id": 39,
+                "text": "বাংলাদেশের জাতীয় যাদুঘর কোথায় অবস্থিত?",
+                "options": ["ঢাকা", "চট্টগ্রাম", "রাজশাহী", "খুলনা"],
+                "answer": "ঢাকা",
+                "baseMarks": 1
+            },
+            {
+                "id": 40,
+                "text": "বাংলাদেশের জাতীয় গ্রন্থাগার কোথায় অবস্থিত?",
+                "options": ["ঢাকা", "চট্টগ্রাম", "রাজশাহী", "খুলনা"],
+                "answer": "ঢাকা",
+                "baseMarks": 1
+            },
+            {
+                "id": 41,
+                "text": "বাংলাদেশের জাতীয় সংসদ ভবনের স্থপতি কে?",
+                "options": ["লুই আই কান", "মাজহারুল ইসলাম", "ফজলুর রহমান খান", "রফিক আজম"],
+                "answer": "লুই আই কান",
+                "baseMarks": 1
+            },
+            {
+                "id": 42,
+                "text": "বাংলাদেশের জাতীয় কবি কাজী নজরুল ইসলামের জন্মদিন কবে?",
+                "options": ["২৫ মে", "১১ জুলাই", "২৫ ডিসেম্বর", "২৪ আগস্ট"],
+                "answer": "২৫ মে",
+                "baseMarks": 1
+            },
+            {
+                "id": 43,
+                "text": "বাংলাদেশের জাতীয় কবি কাজী নজরুল ইসলামের মৃত্যুদিন কবে?",
+                "options": ["২৯ আগস্ট", "২৭ আগস্ট", "২৬ আগস্ট", "২৮ আগস্ট"],
+                "answer": "২৯ আগস্ট",
+                "baseMarks": 1
+            },
+            {
+                "id": 44,
+                "text": "বাংলাদেশের জাতীয় কবি কাজী নজরুল ইসলামের কবিতার বই কোনটি?",
+                "options": ["অগ্নিবীণা", "সঞ্চিতা", "সানাই", "বিষের বাঁশি"],
+                "answer": "অগ্নিবীণা",
+                "baseMarks": 1
+            },
+            {
+                "id": 45,
+                "text": "বাংলাদেশের জাতীয় কবি কাজী নজরুল ইসলামের উপন্যাস কোনটি?",
+                "options": ["বাধঁন হারা", "মৃত্যুক্ষুধা", "কুহেলিকা", "অগ্নিবীণা"],
+                "answer": "বাধঁন হারা",
+                "baseMarks": 1
+            },
+            {
+                "id": 46,
+                "text": "বাংলাদেশের জাতীয় কবি কাজী নজরুল ইসলামের গানের বই কোনটি?",
+                "options": ["বুলবুল", "চন্দ্রবিন্দু", "সন্ধ্যা", "নজরুল গীতি"],
+                "answer": "বুলবুল",
+                "baseMarks": 1
+            },
+            {
+                "id": 47,
+                "text": "বাংলাদেশের জাতীয় কবি কাজী নজরুল ইসলামের নাটক কোনটি?",
+                "options": ["ঝিলিমিলি", "আলেয়া", "পুতুলের বিয়ে", "শিল্পী"],
+                "answer": "ঝিলিমিলি",
+                "baseMarks": 1
+            },
+            {
+                "id": 48,
+                "text": "বাংলাদেশের জাতীয় কবি কাজী নজরুল ইসলামের স্মৃতিসৌধ কোথায় অবস্থিত?",
+                "options": ["ঢাকা", "চট্টগ্রাম", "ত্রিশাল", "কুমিল্লা"],
+                "answer": "ঢাকা",
+                "baseMarks": 1
+            },
+            {
+                "id": 49,
+                "text": "বাংলাদেশের জাতীয় কবি কাজী নজরুল ইসলামের সমাধি কোথায় অবস্থিত?",
+                "options": ["ঢাকা", "চট্টগ্রাম", "ত্রিশাল", "কুমিল্লা"],
+                "answer": "ঢাকা",
+                "baseMarks": 1
+            },
+            {
+                "id": 50,
+                "text": "বাংলাদেশের জাতীয় কবি কাজী নজরুল ইসলামের স্মৃতিসৌধের নাম কী?",
+                "options": ["নজরুল স্মৃতিসৌধ", "বিদ্রোহী কবির স্মৃতিসৌধ", "কবি নজরুল স্মৃতিসৌধ", "কাজী নজরুল ইসলাম স্মৃতিসৌধ"],
+                "answer": "কবি নজরুল স্মৃতিসৌধ",
+                "baseMarks": 1
+            }
+        ]
+        `;
+
+        // JSON ডাটা পার্স করে জাভাস্ক্রিপ্ট অ্যারেতে লোড করা
+        let QUESTION_BANK;
+        try {
+            QUESTION_BANK = JSON.parse(QUESTION_JSON_DATA);
+            if (!Array.isArray(QUESTION_BANK) || QUESTION_BANK.length === 0) {
+                throw new Error("প্রশ্ন ব্যাংক খালি বা ভুল ফরম্যাটে আছে");
+            }
+        } catch (error) {
+            console.error("প্রশ্ন ব্যাংক লোড করতে সমস্যা:", error);
+            QUESTION_BANK = [
+                {
+                    "id": 1,
+                    "text": "ত্রুটি: প্রশ্ন ব্যাংক লোড হয়নি। এটি একটি ডেমো প্রশ্ন।",
+                    "options": ["বিকল্প ১", "বিকল্প ২", "বিকল্প ৩", "বিকল্প ৪"],
+                    "answer": "বিকল্প ১",
+                    "baseMarks": 1
+                }
+            ];
+        }
+
+        // ইউআই ইনফো আপডেট
+        document.getElementById('total-q-count').textContent = EXAM_SETTINGS.TOTAL_QUESTIONS;
+        document.getElementById('total-time-limit').textContent = EXAM_SETTINGS.OVERALL_TIME_LIMIT_MIN;
+        document.getElementById('q-time-limit').textContent = EXAM_SETTINGS.QUESTION_TIME_LIMIT_SEC;
+
+        // === গ্লোবাল ভেরিয়েবল ===
+        let examQuestions = []; 
+        let currentQuestionIndex = 0;
+        let overallTimerInterval;
+        let questionTimerTimeout;
+        let overallTimeRemaining = EXAM_SETTINGS.OVERALL_TIME_LIMIT_MIN * 60; 
+        let isExamActive = false;
+        let examStartTime;
+        let questionStartTime;
+        let hasTabSwitched = false;
+        let markedQuestions = new Set(); 
+
+        let studentAnswers = []; 
+
+        // === র্যান্ডমাইজেশন ও প্রশ্ন প্রস্তুতকরণ ===
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function randomizeQuestionData(question) {
+            if (!question.randomizeData) return question;
+
+            const data = question.randomizeData;
+            let randomizedValue;
+            
+            randomizedValue = Math.floor(Math.random() * (data.max - data.min + 1)) + data.min;
+            
+            let newText = question.text.replace(`(ডাটা: ${data.key})`, `(${randomizedValue} ${data.unit})`);
+                 
+            return { ...question, text: newText, randomizedValue: randomizedValue };
+        }
+
+        function prepareExamQuestions() {
+            try {
+                const shuffledBank = shuffleArray([...QUESTION_BANK]); 
+                const selectedQuestions = shuffledBank.slice(0, EXAM_SETTINGS.TOTAL_QUESTIONS);
+                
+                if (selectedQuestions.length < EXAM_SETTINGS.TOTAL_QUESTIONS) {
+                    console.warn(`প্রশ্ন ব্যাংকে শুধুমাত্র ${selectedQuestions.length}টি প্রশ্ন পাওয়া গেছে, ${EXAM_SETTINGS.TOTAL_QUESTIONS}টি প্রয়োজন`);
+                }
+
+                return selectedQuestions.map(q => {
+                    const qCopy = JSON.parse(JSON.stringify(q)); 
+                    
+                    const correctOption = qCopy.answer;
+                    qCopy.options = shuffleArray(qCopy.options);
+                    qCopy.correctOptionIndex = qCopy.options.indexOf(correctOption);
+                    
+                    if (qCopy.correctOptionIndex === -1) {
+                        console.error(`প্রশ্ন ${qCopy.id} এর সঠিক উত্তর অপশনগুলোর মধ্যে নেই:`, qCopy);
+                        qCopy.correctOptionIndex = 0; 
+                    }
+
+                    return randomizeQuestionData(qCopy);
+                });
+            } catch (error) {
+                console.error("প্রশ্ন প্রস্তুত করতে সমস্যা:", error);
+                return [{
+                    id: 1,
+                    text: "ত্রুটি: প্রশ্ন প্রস্তুত করতে সমস্যা হয়েছে। এটি একটি ডেমো প্রশ্ন।",
+                    options: ["বিকল্প ১", "বিকল্প ২", "বিকল্প ৩", "বিকল্প ৪"],
+                    answer: "বিকল্প ১",
+                    baseMarks: 1,
+                    correctOptionIndex: 0
+                }];
+            }
+        }
+
+
+        // === টাইমার ফাংশন ও প্রোগ্রেস বার আপডেট ===
+
+        function updateProgressBar() {
+            // শুধুমাত্র উত্তর দেওয়া প্রশ্ন গণনা করা হবে
+            const answeredCount = studentAnswers.filter(ans => ans.chosenAnswer).length; 
+            const percentage = (answeredCount / examQuestions.length) * 100;
+            document.getElementById('exam-progress-bar').style.width = `${percentage}%`;
+            document.getElementById('progress-perc').textContent = `${Math.round(percentage)}%`;
+        }
+
+        function startOverallTimer() {
+            overallTimeRemaining = EXAM_SETTINGS.OVERALL_TIME_LIMIT_MIN * 60;
+            overallTimerInterval = setInterval(() => {
+                overallTimeRemaining--;
+                const minutes = Math.floor(overallTimeRemaining / 60);
+                const seconds = overallTimeRemaining % 60;
+                document.getElementById('overall-timer-display').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                if (overallTimeRemaining <= 0) {
+                    clearInterval(overallTimerInterval);
+                    submitExam(true); // সময় শেষ, অটো-সাবমিট
+                }
+            }, 1000);
+        }
+
+        function startQuestionTimer() {
+            let qTimeRemaining = EXAM_SETTINGS.QUESTION_TIME_LIMIT_SEC;
+            clearTimeout(questionTimerTimeout);
+            const qTimerDisplay = document.getElementById('q-timer-display');
+
+            const updateQTimer = () => {
+                qTimerDisplay.querySelector('.value').textContent = `${qTimeRemaining} সে.`;
+                
+                if (qTimeRemaining <= 10) {
+                    qTimerDisplay.style.backgroundColor = 'rgba(255,92,92,0.12)';
+                    qTimerDisplay.style.border = '1px solid rgba(255,92,92,0.14)';
+                } else {
+                    qTimerDisplay.style.backgroundColor = 'transparent';
+                    qTimerDisplay.style.border = '1px solid rgba(255,255,255,0.02)';
+                }
+
+                if (qTimeRemaining <= 0) {
+                    nextQuestion(true); // সময় শেষ, পরের প্রশ্নে যান (অটো-সাবমিট)
+                } else {
+                    qTimeRemaining--;
+                    questionTimerTimeout = setTimeout(updateQTimer, 1000);
+                }
+            };
+            
+            questionStartTime = Date.now(); 
+            updateQTimer();
+        }
+
+        // === UI ও নেভিগেশন (Sequential and Grid) ===
+
+        function displayQuestion() {
+            if (currentQuestionIndex >= examQuestions.length || currentQuestionIndex < 0) {
+                if (currentQuestionIndex === examQuestions.length) {
+                    submitExam(false);
+                }
+                return;
+            }
+
+            const currentQ = examQuestions[currentQuestionIndex];
+
+            // প্রোগ্রেস বার ও কাউন্টার আপডেট
+            updateProgressBar();
+            document.getElementById('q-counter').textContent = `প্রশ্ন: ${currentQuestionIndex + 1} / ${examQuestions.length}`;
+            document.getElementById('q-summary').textContent = `${currentQuestionIndex + 1} / ${examQuestions.length}`;
+            
+            // প্রশ্ন টেক্সট
+            document.getElementById('question-text').textContent = currentQ.text;
+            
+            // অপশন লোড
+            const optionsList = document.getElementById('options-list');
+            optionsList.innerHTML = '';
+            
+            currentQ.options.forEach((option, index) => {
+                const li = document.createElement('li');
+                li.className = 'option-item';
+                li.innerHTML = `
+                    <input type="radio" id="option${index}" name="current-q-option" value="${option}" class="option-input">
+                    <label for="option${index}" class="option-label">
+                        <div class="option-radio">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="opacity:0.95">
+                                <circle cx="12" cy="12" r="9" stroke="white" stroke-opacity="0.6" stroke-width="1.2"></circle>
+                                <path d="M9 12l2 2 4-4" stroke="white" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.95"/>
+                            </svg>
+                        </div>
+                        <div style="flex:1">${option}</div>
+                    </label>
+                `;
+                optionsList.appendChild(li);
+                
+                // অপশনে ক্লিক করলে উত্তর সেভ
+                document.getElementById(`option${index}`).addEventListener('change', () => {
+                     saveCurrentAnswer();
+                     updateQuestionGrid();
+                });
+            });
+
+            // পূর্বের উত্তর লোড করা (যদি থাকে)
+            const previousAnswer = studentAnswers.find(ans => ans.questionIndex === currentQuestionIndex);
+            if (previousAnswer && previousAnswer.chosenAnswer) {
+                const radioToCheck = document.querySelector(`input[value="${previousAnswer.chosenAnswer}"]`);
+                if (radioToCheck) {
+                    radioToCheck.checked = true;
+                }
+            }
+
+            // মার্ক বাটন আপডেট
+            const markBtn = document.getElementById('mark-question-btn');
+            if (markedQuestions.has(currentQuestionIndex)) {
+                markBtn.textContent = '✔️ মার্ক করা (আনমার্ক)';
+                markBtn.style.backgroundColor = 'rgba(255,176,32,0.08)';
+            } else {
+                markBtn.textContent = '🏷️ মার্ক করুন';
+                markBtn.style.backgroundColor = '';
+            }
+
+            startQuestionTimer();
+
+            // পরের বাটন টেক্সট
+            const nextBtn = document.getElementById('next-q-btn');
+            if (currentQuestionIndex === examQuestions.length - 1) {
+                nextBtn.textContent = 'পরীক্ষা শেষ করুন';
+                nextBtn.style.backgroundColor = 'var(--danger)'; // শেষ প্রশ্নে সাবমিট বাটন
+                nextBtn.onclick = () => submitExam(false);
+            } else {
+                nextBtn.textContent = 'পরবর্তী প্রশ্ন';
+                nextBtn.style.backgroundColor = ''; // ডিফল্ট প্রাইমারি
+                nextBtn.onclick = () => nextQuestion();
+            }
+            
+            // পূর্ববর্তী বাটন সক্রিয়/নিষ্ক্রিয় করা
+            const prevBtn = document.getElementById('prev-q-btn');
+            prevBtn.disabled = currentQuestionIndex === 0;
+            
+            // প্রশ্ন গ্রিড আপডেট
+            updateQuestionGrid();
+        }
+        
+        function updateQuestionGrid() {
+            const questionGrid = document.getElementById('question-grid');
+            questionGrid.innerHTML = '';
+            
+            for (let i = 0; i < examQuestions.length; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'question-btn';
+                
+                // উত্তর দেওয়া হয়েছে কি না
+                const isAnswered = studentAnswers.some(ans => ans.questionIndex === i && ans.chosenAnswer);
+                
+                if (i === currentQuestionIndex) {
+                    btn.classList.add('active');
+                    btn.classList.remove('answered', 'marked'); // বর্তমান প্রশ্ন অন্য স্ট্যাটাস সরান
+                } else if (isAnswered) {
+                    btn.classList.add('answered');
+                    btn.classList.remove('active', 'marked');
+                } else if (markedQuestions.has(i)) { // মার্কড প্রশ্ন উত্তর দেওয়া না থাকলেও মার্কড থাকবে
+                    btn.classList.add('marked');
+                    btn.classList.remove('active', 'answered');
+                } else {
+                    btn.classList.remove('active', 'answered', 'marked');
+                }
+                
+                btn.textContent = i + 1;
+                btn.onclick = () => navigateToQuestion(i);
+                questionGrid.appendChild(btn);
+            }
+        }
+        
+        function saveCurrentAnswer(isAutoSubmit = false) {
+            const selectedOption = document.querySelector('input[name="current-q-option"]:checked');
+            let answeredText = selectedOption ? selectedOption.value : null;
+
+            // যদি প্রশ্ন লোড না হয়ে থাকে বা পরীক্ষা শেষ হয়ে গিয়ে থাকে তাহলে কিছু সেভ করার দরকার নেই
+            if (!examQuestions[currentQuestionIndex]) return; 
+
+            const timeTaken = (Date.now() - questionStartTime) / 1000;
+            const currentQ = examQuestions[currentQuestionIndex];
+            
+            let existingAnswerIndex = studentAnswers.findIndex(ans => ans.questionIndex === currentQuestionIndex);
+
+            // যদি উত্তর না দিয়ে থাকে এবং অটোসাবমিট না হয়, তবে শুধু সময় যোগ করুন (যদি আগে থেকে উত্তর সেভ না থাকে)
+            if (!answeredText && !isAutoSubmit && existingAnswerIndex === -1) return;
+
+
+            const newAnswer = {
+                questionIndex: currentQuestionIndex,
+                questionId: currentQ.id,
+                questionText: currentQ.text,
+                correctAnswer: currentQ.options[currentQ.correctOptionIndex], // সঠিক উত্তর ফলাফলে দেখানোর জন্য
+                chosenAnswer: answeredText,
+                timeSpent: parseFloat(timeTaken.toFixed(2)),
+                isCorrect: answeredText === currentQ.options[currentQ.correctOptionIndex],
+                isSkipped: !answeredText && !isAutoSubmit,
+                isAutoSubmit: isAutoSubmit 
+            };
+            
+            if (existingAnswerIndex !== -1) {
+                // উত্তর পরিবর্তন বা শুধু সময় আপডেট (যদি আগে উত্তর সেভ না করে থাকে)
+                studentAnswers[existingAnswerIndex] = newAnswer;
+            } else {
+                // প্রথমবার উত্তর দেওয়া বা স্কিপ/অটো-স্কিপ
+                studentAnswers.push(newAnswer);
+            }
+        }
+        
+        function navigateToQuestion(index) {
+            if (index >= 0 && index < examQuestions.length) {
+                // বর্তমান প্রশ্নের উত্তর সংরক্ষণ করুন
+                saveCurrentAnswer();
+                
+                currentQuestionIndex = index;
+                displayQuestion();
+            }
+        }
+        
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                saveCurrentAnswer();
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+        
+        function nextQuestion(isAutoSubmit = false) {
+            saveCurrentAnswer(isAutoSubmit); // বর্তমান প্রশ্নের উত্তর বা স্কিপড স্ট্যাটাস সেভ করুন
+            
+            currentQuestionIndex++;
+            if (currentQuestionIndex < examQuestions.length) {
+                displayQuestion();
+            } else {
+                // শেষ প্রশ্ন সাবমিট করার পরে যদি এখানে আসে
+                submitExam(false); 
+            }
+        }
+        
+        function markCurrentQuestion() {
+            if (markedQuestions.has(currentQuestionIndex)) {
+                markedQuestions.delete(currentQuestionIndex);
+            } else {
+                markedQuestions.add(currentQuestionIndex);
+            }
+            updateQuestionGrid();
+            
+            // মার্ক বাটন আপডেট
+            const markBtn = document.getElementById('mark-question-btn');
+            if (markedQuestions.has(currentQuestionIndex)) {
+                markBtn.textContent = '✔️ মার্ক করা (আনমার্ক)';
+                markBtn.style.backgroundColor = 'rgba(255,176,32,0.08)';
+            } else {
+                markBtn.textContent = '🏷️ মার্ক করুন';
+                markBtn.style.backgroundColor = '';
+            }
+        }
+
+
+        // === অ্যাডভান্সড লক ও নিরাপত্তা ফাংশন (Proctoring) - অপরিবর্তিত ===
+
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (isExamActive) {
+                // কপি, পেস্ট, সিলেকশন, ভিউ সোর্স, সেভ
+                if (e.ctrlKey && (e.key === 'a' || e.key === 'c' || e.key === 'v' || e.key === 'u' || e.key === 's')) { 
+                    e.preventDefault();
+                    showProctorAlertAndSubmit();
+                }
+                if (e.key === 'F12' || e.key === 'Escape' || e.key === 'Alt' || e.key === 'Tab' ) {
+                    e.preventDefault();
+                    showProctorAlertAndSubmit();
+                }
+            }
+        });
+
+        function showProctorAlertAndSubmit() {
+            if (isExamActive && !hasTabSwitched) {
+                 hasTabSwitched = true;
+                 // প্রোctering লঙ্ঘন হলে বর্তমান উত্তরটি সেভ করুন
+                 saveCurrentAnswer(true); 
+                 document.getElementById('proctor-alert').style.display = 'flex';
+                 // ২ সেকেন্ড পর স্বয়ংক্রিয়ভাবে সাবমিট করুন
+                 setTimeout(() => submitExam(true), 2000); 
+            }
+        }
+
+        window.addEventListener('blur', showProctorAlertAndSubmit);
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && isExamActive) {
+                showProctorAlertAndSubmit();
+            }
+        });
+
+        function requestFullScreen() {
+            const element = document.documentElement;
+            if (element.requestFullscreen) {
+                element.requestFullscreen().catch(() => {
+                    console.warn("ফুলস্ক্রিন মোড চালু করতে সমস্যা হয়েছে");
+                });
+            } else if (element.mozRequestFullScreen) { // Firefox
+                element.mozRequestFullScreen();
+            } else if (element.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) { // IE/Edge
+                element.msRequestFullscreen();
+            }
+        }
+
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement === null && isExamActive) {
+                // ফুল-স্ক্রিন থেকে বেরিয়ে গেলে
+                showProctorAlertAndSubmit();
+            }
+        });
+        
+        // === পরীক্ষার সাবমিট ও ফলাফল গণনা ===
+
+        function submitExam(isAutoSubmit) {
+            if (!isExamActive) return;
+
+            // শেষ প্রশ্নের উত্তর সেভ করুন (যদি এখনো সেভ না হয়ে থাকে)
+            saveCurrentAnswer(isAutoSubmit); 
+            
+            // টাইমার বন্ধ
+            clearInterval(overallTimerInterval);
+            clearTimeout(questionTimerTimeout);
+            isExamActive = false;
+
+            // ফলাফল গণনা
+            let totalCorrect = 0;
+            let totalMarks = examQuestions.length;
+            let finalScore = 0;
+            let totalTimeSpent = 0;
+
+            studentAnswers.forEach(ans => {
+                const questionData = examQuestions.find(q => q.questionId === ans.questionId);
+                const marks = questionData ? questionData.baseMarks : 1;
+                totalTimeSpent += ans.timeSpent || 0;
+
+                if (ans.isCorrect) {
+                    totalCorrect++;
+                    finalScore += marks;
+                } else if (ans.chosenAnswer) {
+                    // ভুল উত্তরের জন্য নেগেটিভ মার্কিং
+                    finalScore -= EXAM_SETTINGS.NEGATIVE_MARKING;
+                }
+                // স্কিপ করা প্রশ্নের জন্য 0 মার্ক
+            });
+
+            // প্রোctering লঙ্ঘনের জন্য ফাইনাল স্কোর থেকে কাটা
+            let penaltyAmount = 0;
+            if (hasTabSwitched || isAutoSubmit) {
+                const deductionPercentage = EXAM_SETTINGS.TAB_SWITCH_PENALTY_PERCENT / 100;
+                penaltyAmount = (totalMarks * deductionPercentage); // মোট মার্কের উপর ভিত্তি করে জরিমানা
+                finalScore -= penaltyAmount;
+            }
+            
+            // স্কোর নেগেটিভ হতে পারে না
+            finalScore = Math.max(0, finalScore); 
+            
+            // ফলাফল প্রদর্শন
+            displayResults(totalMarks, totalCorrect, finalScore, penaltyAmount, totalTimeSpent);
+        }
+
+        function displayResults(totalQuestions, correctAnswers, finalScore, penaltyAmount, totalTimeSpent) {
+            // UI পরিবর্তন
+            document.getElementById('loading-screen').style.display = 'none';
+            document.getElementById('exam-container').style.display = 'none';
+            document.getElementById('proctor-alert').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+
+            // স্কোর ডিসপ্লে
+            document.getElementById('final-score').innerHTML = `
+                মোট প্রশ্ন: ${totalQuestions}<br>
+                সঠিক উত্তর: ${correctAnswers}<br>
+                নেগেটিভ মার্কিং সহ চূড়ান্ত স্কোর: <span style="color:${finalScore > 0 ? 'var(--success)' : 'var(--danger)'}; font-size:1.5rem">${finalScore.toFixed(2)} / ${totalQuestions}</span>
+            `;
+
+            // পেনাল্টি বার্তা
+            const deductionMsg = document.getElementById('deduction-msg');
+            if (penaltyAmount > 0) {
+                deductionMsg.textContent = `🚫 নিরাপত্তা লঙ্ঘনের জন্য স্কোর থেকে ${penaltyAmount.toFixed(2)} পয়েন্ট কাটা হয়েছে।`;
+                deductionMsg.style.color = 'var(--danger)';
+            } else {
+                deductionMsg.textContent = 'অভিনন্দন! কোনো নিরাপত্তা লঙ্ঘন ঘটেনি।';
+                deductionMsg.style.color = 'var(--success)';
+            }
+
+            // বিস্তারিত ফলাফল টেবিল
+            const resultTableBody = document.getElementById('result-table-body');
+            resultTableBody.innerHTML = '';
+            
+            examQuestions.forEach((q, index) => {
+                const answer = studentAnswers.find(ans => ans.questionIndex === index) || {
+                    chosenAnswer: 'উত্তর দেওয়া হয়নি',
+                    timeSpent: 0,
+                    isCorrect: false
+                };
+                
+                let statusText;
+                let statusColor;
+                if (answer.isCorrect) {
+                    statusText = 'সঠিক';
+                    statusColor = 'var(--success)';
+                } else if (answer.chosenAnswer === 'উত্তর দেওয়া হয়নি') {
+                    statusText = 'স্কিপড';
+                    statusColor = 'var(--muted)';
+                } else {
+                    statusText = 'ভুল (সঠিক উত্তর: ' + q.options[q.correctOptionIndex] + ')';
+                    statusColor = 'var(--danger)';
+                }
+
+                const row = resultTableBody.insertRow();
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${q.text.substring(0, 40)}...</td>
+                    <td>${answer.timeSpent.toFixed(1)} সে.</td>
+                    <td style="color:${statusColor}">${statusText}</td>
+                `;
+            });
+            
+            console.log("মোট পরীক্ষাকালীন সময় (সেকেন্ডে):", totalTimeSpent.toFixed(2));
+        }
+
+
+        // === ইনিশিয়ালাইজেশন ও ইভেন্ট লিসেনার ===
+
+        function startExam() {
+            // ১. ফুলস্ক্রিন অনুরোধ
+            requestFullScreen(); 
+            
+            // ২. UI পরিবর্তন
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('loading-screen').style.display = 'flex';
+
+            // ৩. প্রশ্ন প্রস্তুত (র্যান্ডমাইজেশন সহ)
+            examQuestions = prepareExamQuestions();
+
+            // ৪. ডেটা ইনিশিয়ালাইজ করুন
+            currentQuestionIndex = 0;
+            studentAnswers = [];
+            overallTimeRemaining = EXAM_SETTINGS.OVERALL_TIME_LIMIT_MIN * 60;
+            isExamActive = true;
+            examStartTime = Date.now();
+            hasTabSwitched = false;
+            markedQuestions.clear();
+
+
+            // লোডিং শেষ করে পরীক্ষা শুরু
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.display = 'none';
+                document.getElementById('exam-container').style.display = 'flex';
+                
+                // টাইমার ও প্রথম প্রশ্ন প্রদর্শন
+                startOverallTimer();
+                displayQuestion(); 
+            }, 1500); // ১.৫ সেকেন্ড লোডিং স্ক্রিন
+        }
+
+        document.getElementById('start-exam-btn').addEventListener('click', startExam);
+        document.getElementById('submit-exam-btn').addEventListener('click', () => submitExam(false));
+        document.getElementById('next-q-btn').addEventListener('click', () => {
+            // শেষ প্রশ্নে বাটন পরিবর্তন হবে displayQuestion() এ, তাই এখানে ডিফল্ট nextQuestion কল
+            if (currentQuestionIndex < examQuestions.length - 1) {
+                nextQuestion();
+            } else {
+                submitExam(false);
+            }
+        });
+        document.getElementById('mark-question-btn').addEventListener('click', markCurrentQuestion);
+
+        // নিশ্চিত করুন যাতে নেভিগেশন ঠিকমতো কাজ করে
+        document.getElementById('prev-q-btn').addEventListener('click', prevQuestion);
+        
+        // প্রাথমিক প্রশ্ন গ্রিড তৈরি (শুধুমাত্র বাটন সংখ্যা দেখানোর জন্য)
+        window.onload = () => {
+            // মোট প্রশ্ন সংখ্যার জন্য ডামি গ্রিড তৈরি
+            const questionGrid = document.getElementById('question-grid');
+            questionGrid.innerHTML = '';
+            for (let i = 0; i < EXAM_SETTINGS.TOTAL_QUESTIONS; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'question-btn';
+                btn.textContent = i + 1;
+                btn.onclick = () => alert('পরীক্ষা শুরু না হওয়া পর্যন্ত নেভিগেট করা যাবে না।');
+                questionGrid.appendChild(btn);
+            }
+        }
+    </script>
+</body>
+</html>
